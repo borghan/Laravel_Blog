@@ -3,14 +3,17 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'title',
         'intro',
         'content',
-        'published_at'
+        'published_at',
+        'deleted_at'
     ];
 
     protected function getNextArticleId($id)

@@ -1,10 +1,8 @@
 @extends('app')
 @section('content')
     <article class="format-image group">
-        <h2 class="post-title pad">
-            <a href="/post/{{ $article->id }}" rel="bookmark"> {{ $article->title }}</a>
-        </h2>
         <div class="post-inner">
+            <h1 class="post-title pad at-post">{{ $article->title }}</h1>
             <div class="post-content pad">
                 <div class="entry custome">
                     {{ $article->content }}
