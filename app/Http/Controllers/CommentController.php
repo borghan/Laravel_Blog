@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
+use App\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class ArticleController extends Controller
+class CommentController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::latest() -> get();
-        return view('articles.index', compact('articles'));
+        //
     }
 
     /**
@@ -28,9 +28,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('articles.create');
+        //
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -40,14 +39,11 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-       $input = [
-            'content' => $request['content'],
-            'title' => $request['title'],
-            'intro' => mb_substr($request['content'], 0, 250) . '......',
-            'published_at' => date('Y-m-d H:i:s', time())
-                ];
-        Article::create($input);
-        return redirect('/post');
+        if (Comment::create($request -> all())) {
+            return Redirect::back();
+        } else {
+            return Redirect('/');
+        }
     }
 
     /**
@@ -58,11 +54,7 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article = Article::findOrFail($id);
-        $next_article = Article::getNextArticleId($id);
-        $prev_article = Article::getPrevArticleId($id);
-        $comments = $article -> getComments;
-        return view('articles.show', compact('article', 'next_article', 'prev_article', 'comments'));
+        //
     }
 
     /**
@@ -73,8 +65,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        $article = Article::findOrFail($id);
-        return view('articles.edit', compact('article'));
+        //
     }
 
     /**
@@ -86,12 +77,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input = [
-            'content' => $request['content'],
-            'title' => $request['title'],
-        ];
-        Article::where('id', $id) -> update($input);
-        return redirect('/post');
+        //
     }
 
     /**
@@ -102,7 +88,6 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-      Article::where('id', $id) -> delete();
-      return redirect('/post');
+        //
     }
 }

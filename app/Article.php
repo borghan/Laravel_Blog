@@ -8,13 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Article extends Model
 {
     use SoftDeletes;
-    protected $fillable = [
-        'title',
-        'intro',
-        'content',
-        'published_at',
-        'deleted_at'
-    ];
+    protected $fillable = ['title', 'intro', 'content', 'published_at', 'deleted_at'];
 
     protected function getNextArticleId($id)
     {
@@ -26,5 +20,10 @@ class Article extends Model
     {
         $prev_id =  $this::where('id', '<', $id) -> max('id');
         return $this::find($prev_id);
+    }
+
+    public function getComments()
+    {
+        return $this->hasMany('App\Comment', 'article_id', 'id');
     }
 }
