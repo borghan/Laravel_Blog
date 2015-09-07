@@ -10,6 +10,13 @@
             </div>
         </div>
     </article>
+
+    <div class="tags">
+        @foreach($tags as $tag)
+            <a href="#" class="">{{ $tag->name }}</a>
+        @endforeach
+    </div>
+
     <ul class="post-nav group">
     <li class="previous">
         @if($prev_article)
@@ -23,6 +30,7 @@
         @endif
     </li>
     </ul>
+
     <div class="comments">
         @foreach ($comments as $comment)
             <div class="one" style="border-top: solid 6px #efefef; padding: 5px 20px; border-radius: 6px;">

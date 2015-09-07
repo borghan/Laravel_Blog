@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -46,7 +47,18 @@ class ArticleController extends Controller
             'intro' => mb_substr($request['content'], 0, 250) . '......',
             'published_at' => date('Y-m-d H:i:s', time())
                 ];
-        Article::create($input);
+        $article = Article::create($input);
+
+        $tags = explode(',', $request['tags']);
+        foreach ($tags as $tagName) {
+            $tag = Tag::where('name', '=', $tagName)->first();
+            if(!$tag) {
+                $tag = Tag::create(['name' => $tagName]);
+            }
+            $tag->count++;
+            $article->getTags()->save($tag);
+        }
+
         return redirect('/post');
     }
 
@@ -59,10 +71,11 @@ class ArticleController extends Controller
     public function show($id)
     {
         $article = Article::findOrFail($id);
-        $next_article = Article::getNextArticleId($id);
-        $prev_article = Article::getPrevArticleId($id);
+        $next_article = $article -> getNextArticleId($id);
+        $prev_article = $article -> getPrevArticleId($id);
         $comments = $article -> getComments;
-        return view('articles.show', compact('article', 'next_article', 'prev_article', 'comments'));
+        $tags = $article -> getTags;
+        return view('articles.show', compact('article', 'next_article', 'prev_article', 'comments', 'tags'));
     }
 
     /**
@@ -74,7 +87,12 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $article = Article::findOrFail($id);
-        return view('articles.edit', compact('article'));
+        $tags = $article -> getTags;
+        $tagName = null;
+        foreach ($tags as $tag) {
+            $tagName .= $tag->name . ',';
+        }
+        return view('articles.edit', compact('article', 'tagName'));
     }
 
     /**
@@ -91,6 +109,9 @@ class ArticleController extends Controller
             'title' => $request['title'],
         ];
         Article::where('id', $id) -> update($input);
+
+//        $tags = array_unique(explode(',', $request['tags']));
+//        $article -> getTags() -> save($tags);
         return redirect('/post');
     }
 

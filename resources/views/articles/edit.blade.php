@@ -12,6 +12,10 @@
         {!! Form::textarea('content', $article -> content, ['class'=>'form-control']) !!}
     </div>
     <div class="form-group">
+        {!! Form::label('tags', '标签:') !!}
+        {!! Form::text('tags', $tagName, ['class'=>'form-control']) !!}
+    </div>
+    <div class="form-group">
         {!! Form::submit('更新文章', ['class' => 'btn btn-success form-control']) !!}
     </div>
     {!! Form::close() !!}
