@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 
 class ArticleController extends Controller
 {
@@ -18,7 +19,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::latest() -> get();
+        $articles = Article::latest()->get();
         return view('articles.index', compact('articles'));
     }
 
@@ -36,28 +37,21 @@ class ArticleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request  $request
+     * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Requests\StoreArticleRequest $request)
     {
-       $input = [
+        $input = [
             'content' => $request['content'],
             'title' => $request['title'],
             'intro' => mb_substr($request['content'], 0, 250) . '......',
             'published_at' => date('Y-m-d H:i:s', time())
-                ];
+        ];
         $article = Article::create($input);
 
-        $tags = explode(',', $request['tags']);
-        foreach ($tags as $tagName) {
-            $tag = Tag::where('name', '=', $tagName)->first();
-            if(!$tag) {
-                $tag = Tag::create(['name' => $tagName]);
-            }
-            $tag->count++;
-            $article->getTags()->save($tag);
-        }
+        $tags = $this -> separateTags($request['tags']);
+        $this -> saveTags($article, $tags);
 
         return redirect('/post');
     }
@@ -65,29 +59,29 @@ class ArticleController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function show($id)
     {
         $article = Article::findOrFail($id);
-        $next_article = $article -> getNextArticleId($id);
-        $prev_article = $article -> getPrevArticleId($id);
-        $comments = $article -> getComments;
-        $tags = $article -> getTags;
+        $next_article = $article->getNextArticleId($id);
+        $prev_article = $article->getPrevArticleId($id);
+        $comments = $article->getComments;
+        $tags = $article->getTags;
         return view('articles.show', compact('article', 'next_article', 'prev_article', 'comments', 'tags'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function edit($id)
     {
         $article = Article::findOrFail($id);
-        $tags = $article -> getTags;
+        $tags = $article->getTags;
         $tagName = null;
         foreach ($tags as $tag) {
             $tagName .= $tag->name . ',';
@@ -98,8 +92,8 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  int  $id
+     * @param  Request $request
+     * @param  int $id
      * @return Response
      */
     public function update(Request $request, $id)
@@ -108,22 +102,54 @@ class ArticleController extends Controller
             'content' => $request['content'],
             'title' => $request['title'],
         ];
-        Article::where('id', $id) -> update($input);
+        $article = Article::findOrFail($id);
+        $article->update($input);
 
-//        $tags = array_unique(explode(',', $request['tags']));
-//        $article -> getTags() -> save($tags);
+        $tags = $this->separateTags($request['tags']);
+        $old_tags = $article->getTags;
+        if(!empty($old_tags)) {
+            foreach ($old_tags as $tag) {
+                if ($index = array_search($tag->name, $tags) !== false) {
+                    unset($tags[$index-1]);
+                } else {
+                    $tag->count--;
+                    $tag->save();
+                    $article->getTags()->detach($tag->id);
+                }
+            }
+        }
+        dump($tags);
+        $this->saveTags($article, $tags);
+
         return redirect('/post');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return Response
      */
     public function destroy($id)
     {
-      Article::where('id', $id) -> delete();
-      return redirect('/post');
+        Article::where('id', $id)->delete();
+        return redirect('/post');
+    }
+
+    public function separateTags($tags)
+    {
+        return array_unique(explode(',', $tags));
+    }
+
+    public function saveTags(Article $article, $tags)
+    {
+        foreach ($tags as $tagName) {
+            $tag = Tag::where('name', '=', $tagName)->first();
+            if (!$tag) {
+                $tag = Tag::create(['name' => $tagName]);
+            }
+            $tag->count++;
+            $article->getTags()->save($tag);
+        }
     }
 }

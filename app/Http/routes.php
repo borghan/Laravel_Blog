@@ -21,12 +21,12 @@ Route::get('/post/create', 'ArticleController@create');
 
 Route::post('/post/store', 'ArticleController@store');
 
-Route::get('/post/{id}', 'ArticleController@show');
+Route::get('/post/{id}', 'ArticleController@show')->where('id', '[0-9]+');;
 
-Route::get('/post/{id}/edit', 'ArticleController@edit');
+Route::get('/post/{id}/edit', 'ArticleController@edit')->where('id', '[0-9]+');;
 
-Route::put('/post/{id}', 'ArticleController@update');
+Route::put('/post/{id}', 'ArticleController@update')->where('id', '[0-9]+');;
 
-Route::delete('/post/{id}', 'ArticleController@destroy');
+Route::delete('/post/{id}', 'ArticleController@destroy')->where('id', '[0-9]+');;
 
-Route::post('/post/{id}/comment/store', 'CommentController@store');
+Route::post('/post/{id}/comment/store', 'CommentController@store')->where('id', '[0-9]+');;

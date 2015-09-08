@@ -1,6 +1,14 @@
 @extends('app')
 @section('content')
     <h1>撰写新文章</h1>
+    <br>
+    @if($errors->any())
+        <ul class="alert alert-danger">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    @endif
     {!! Form::open(['url' => 'post/store']) !!}
     <div class="form-group">
         {!! Form::label('title', '标题:') !!}
