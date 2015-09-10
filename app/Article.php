@@ -2,13 +2,25 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
     use SoftDeletes;
+    protected $dates = ['published_at'];
     protected $fillable = ['title', 'intro', 'content', 'published_at', 'deleted_at'];
+
+    public function setPublishedAtAttribute($date)
+    {
+        $this->attributes['published_at'] = Carbon::createFromFormat('Y-m-d',$date);
+    }
+
+    public function scopePublished($query)
+    {
+        $query->where('published_at', '<=', Carbon::now());
+    }
 
     public function getComments()
     {
@@ -31,4 +43,5 @@ class Article extends Model
         $prev_id =  $this::where('id', '<', $id) -> max('id');
         return $this::find($prev_id);
     }
+
 }

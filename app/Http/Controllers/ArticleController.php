@@ -19,7 +19,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::latest()->get();
+        $articles = Article::latest()->published()->get();
         return view('articles.index', compact('articles'));
     }
 
@@ -42,12 +42,8 @@ class ArticleController extends Controller
      */
     public function store(Requests\StoreArticleRequest $request)
     {
-        $input = [
-            'content' => $request['content'],
-            'title' => $request['title'],
-            'intro' => mb_substr($request['content'], 0, 250) . '......',
-            'published_at' => date('Y-m-d H:i:s', time())
-        ];
+        $input = $request -> all();
+        $input['intro'] = mb_substr($request['content'], 0, 250) . '......';
         $article = Article::create($input);
 
         $tags = $this -> separateTags($request['tags']);
@@ -101,6 +97,7 @@ class ArticleController extends Controller
         $input = [
             'content' => $request['content'],
             'title' => $request['title'],
+            'published_at' => $request['published_at']
         ];
         $article = Article::findOrFail($id);
         $article->update($input);
@@ -118,7 +115,6 @@ class ArticleController extends Controller
                 }
             }
         }
-        dump($tags);
         $this->saveTags($article, $tags);
 
         return redirect('/post');
@@ -152,4 +148,5 @@ class ArticleController extends Controller
             $article->getTags()->save($tag);
         }
     }
+
 }

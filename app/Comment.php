@@ -9,4 +9,5 @@ class Comment extends Model
 {
     use SoftDeletes;
     protected $fillable = ['nickname', 'email', 'website', 'content', 'article_id'];
+
 }
