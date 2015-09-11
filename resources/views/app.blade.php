@@ -7,6 +7,9 @@
     <title>Laravel 5 教程</title>
     <link rel='stylesheet' href="/css/bootstrap.min.css" type='text/css' media='all'/>
     <link rel='stylesheet' href="/css/all.css" type='text/css' media='all'/>
+    <link rel='stylesheet' href="/css/select2.css" type='text/css' media='all'/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/select2.min.js"></script>
     <script type='text/javascript' src="/js/all.js"></script>
 </head>
 <body>

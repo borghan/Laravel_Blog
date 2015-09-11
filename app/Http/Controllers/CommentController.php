@@ -37,7 +37,7 @@ class CommentController extends Controller
      * @param  Request  $request
      * @return Response
      */
-    public function store(Request $request)
+    public function store(Requests\StoreCommentRequest $request)
     {
         if (Comment::create($request -> all())) {
             return Redirect::back();

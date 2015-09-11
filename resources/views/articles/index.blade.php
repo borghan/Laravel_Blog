@@ -5,6 +5,19 @@
             <h2 class="post-title pad">
                 <a href="/post/{{ $article->id }}"> {{ $article->title }}</a>
             </h2>
+            <ul class="post-meta pad group">
+                <li><i class="fa fa-clock-o"></i>{{ $article->published_at->diffForHumans() }}</li>
+                <li><i class="fa fa-comments"></i>
+                    <a href="/post/{{ $article->id }}#comments">
+                        {{ $article->getComments->count() }} 评论
+                    </a>
+                </li>
+                @if($article->getTags)
+                    @foreach($article->getTags as $tag)
+                        <li><i class="fa fa-tag"></i>{{ $tag->name }}</li>
+                    @endforeach
+                @endif
+            </ul>
             <div class="post-inner">
                 <div class="post-deco">
                     <div class="hex hex-small">

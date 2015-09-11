@@ -11,11 +11,19 @@
         </div>
     </article>
 
-    <div class="tags">
-        @foreach($tags as $tag)
-            <a href="#" class="">{{ $tag->name }}</a>
-        @endforeach
-    </div>
+    <ul class="post-meta pad group">
+        <li><i class="fa fa-clock-o"></i>{{ $article->published_at->diffForHumans() }}</li>
+        <li><i class="fa fa-comments"></i>
+            <a href="/post/{{ $article->id }}#comments">
+                {{ $article->getComments->count() }} 评论
+            </a>
+        </li>
+        @if($article->getTags)
+            @foreach($article->getTags as $tag)
+                <li><i class="fa fa-tag"></i>{{ $tag->name }}</li>
+            @endforeach
+        @endif
+    </ul>
 
     <ul class="post-nav group">
     <li class="previous">
@@ -31,9 +39,9 @@
     </li>
     </ul>
 
-    <div class="comments">
+    <div id="comments">
         @foreach ($comments as $comment)
-            <div class="one" style="border-top: solid 6px #efefef; padding: 5px 20px; border-radius: 6px;">
+            <div class="my-comments">
                 <div class="nickname" data="{{ $comment->nickname }}">
                     @if ($comment->website)
                         <a href="{{ $comment->website }}">
@@ -55,26 +63,35 @@
             </div>
         @endforeach
 
-        {!! Form::open(['url' => '/post/'.$article -> id.'/comment/store', 'method' => 'post']) !!}
+        <div class="row">
+            {!! Form::open(['url'=>'/post/'.$article -> id.'/comment/store', 'method'=>'post']) !!}
             {!! Form::hidden('article_id', $article -> id) !!}
-            <div class="form-group">
+            @if($errors->any())
+                <div class="form-group col-md-12">
+                    @include('utils.alert', ['errors'])
+                </div>
+            @endif
+            <div class="form-group col-md-4">
                 {!! Form::label('nickname', '用户名:') !!}
                 {!! Form::text('nickname', null, ['class' => 'form-control', 'required' => 'required']) !!}
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4">
                 {!! Form::label('email', '邮箱:') !!}
                 {!! Form::text('email', null, ['class' => 'form-control', 'required' => 'required']) !!}
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-4">
                 {!! Form::label('website', '网站:') !!}
                 {!! Form::text('website', null, ['class' => 'form-control']) !!}
             </div>
-            <div class="form-group">
+            <div class="form-group col-md-12">
                 {!! Form::label('content', '评论:') !!}
                 {!! Form::textarea('content', null, ['id' => 'newFormContent', 'class' => 'form-control', 'required' => 'required']) !!}
             </div>
+            <div class="form-group col-md-12">
             {!! Form::submit('发表评论', ['class' => 'btn btn-success form-control']) !!}
-        {!! Form::close() !!}
+            </div>
+            {!! Form::close() !!}
+        </div>
     </div>
 
     <script>

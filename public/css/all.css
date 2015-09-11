@@ -1144,6 +1144,12 @@ h2 {
 
 /* comment text */
 
+.my-comments {
+  border-top: solid 6px #efefef;
+  padding: 5px 20px;
+  border-radius: 6px;
+}
+
 /* post author & admin comment */
 
 /* child comment */
