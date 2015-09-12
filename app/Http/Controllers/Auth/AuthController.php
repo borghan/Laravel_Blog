@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 use Validator;
+use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
@@ -61,5 +65,28 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function showLogin()
+    {
+        return view('auth.login');
+    }
+
+    protected function login(Requests\LoginRequest $request)
+    {
+        $input = [
+            'name'=>$request['name'],
+            'password'=>$request['password']
+        ];
+        if (Auth::attempt($input)) {
+            return redirect('/post');
+        } else {
+            return Redirect::route('showLogin');
+        }
+    }
+
+    protected function logout()
+    {
+
     }
 }

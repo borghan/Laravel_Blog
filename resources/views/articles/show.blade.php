@@ -1,6 +1,6 @@
 @extends('app')
 @section('content')
-    <article class="format-image group">
+    <article class="format-standard group">
         <div class="post-inner">
             <h1 class="post-title pad at-post">{{ $article->title }}</h1>
             <div class="post-content pad">

@@ -5,14 +5,14 @@
     @if($errors->any())
         @include('utils.alert', ['errors'])
     @endif
-    {!! Form::open(['url' => 'post/store']) !!}
+    {!! Form::open(['url' => route('storeArticle'), 'method' => 'post']) !!}
     <div class="form-group">
         {!! Form::label('title', '标题:') !!}
-        {!! Form::text('title', null, ['class' => 'form-control']) !!}
+        {!! Form::text('title', null, ['class' => 'form-control', 'required' => 'required']) !!}
     </div>
     <div class="form-group">
         {!! Form::label('content', '正文:') !!}
-        {!! Form::textarea('content', null, ['class' => 'form-control']) !!}
+        {!! Form::textarea('content', null, ['class' => 'form-control', 'required' => 'required']) !!}
     </div>
     <div class="form-group">
         {!! Form::label('tags', '标签:') !!}

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Redirect;
 
 class ArticleController extends Controller
@@ -19,7 +20,7 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles = Article::latest()->published()->get();
+        $articles = Article::latest()->published()->paginate(5);
         return view('articles.index', compact('articles'));
     }
 
@@ -96,6 +97,7 @@ class ArticleController extends Controller
     {
         $input = [
             'content' => $request['content'],
+            'intro' => mb_substr($request['content'], 0, 250) . '......',
             'title' => $request['title'],
             'published_at' => $request['published_at']
         ];
@@ -106,8 +108,9 @@ class ArticleController extends Controller
         $old_tags = $article->getTags;
         if(!empty($old_tags)) {
             foreach ($old_tags as $tag) {
-                if ($index = array_search($tag->name, $tags) !== false) {
-                    unset($tags[$index-1]);
+                $index = array_search($tag->name, $tags);
+                if ($index !== false) {
+                    unset($tags[$index]);
                 } else {
                     $tag->count--;
                     $tag->save();
@@ -134,7 +137,7 @@ class ArticleController extends Controller
 
     public function separateTags($tags)
     {
-        return array_unique(explode(',', $tags));
+        return array_filter(array_unique(explode(',', $tags)));
     }
 
     public function saveTags(Article $article, $tags)

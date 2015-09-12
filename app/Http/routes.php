@@ -11,22 +11,26 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', 'ArticleController@index');
+
+Route::get('/post/{id}', 'ArticleController@show');
+
+Route::post('/post/{id}/comment/store', ['as'=>'createComment', 'uses'=>'CommentController@store']);
+
+Route::group(['prefix'=>'/post', 'middleware'=>'auth'], function() {
+    Route::get('create', ['as'=>'createArticle', 'uses'=>'ArticleController@create']);
+    Route::post('store', ['as'=>'storeArticle', 'uses'=>'ArticleController@store']);
+    Route::get('{id}/edit', ['as'=>'editArticle', 'uses'=>'ArticleController@edit']);
+    Route::put('{id}', ['as'=>'updateArticle', 'uses'=>'ArticleController@update']);
+    Route::delete('{id}', ['as'=>'deleteArticle', 'uses'=>'ArticleController@destroy']);
 });
 
-Route::get('/post', 'ArticleController@index');
+Route::group(['prefix'=>'/auth'], function() {
+    Route::get('login', ['as'=>'showLogin', 'uses'=>'Auth\AuthController@showLogin']);
+    Route::post('login', ['as'=>'login', 'uses'=>'Auth\AuthController@login']);
+    Route::get('logout', ['as'=>'logout', 'uses'=>'Auth\AuthController@logout']);
+});
 
-Route::get('/post/create', 'ArticleController@create');
-
-Route::post('/post/store', 'ArticleController@store');
-
-Route::get('/post/{id}', 'ArticleController@show')->where('id', '[0-9]+');;
-
-Route::get('/post/{id}/edit', 'ArticleController@edit')->where('id', '[0-9]+');;
-
-Route::put('/post/{id}', 'ArticleController@update')->where('id', '[0-9]+');;
-
-Route::delete('/post/{id}', 'ArticleController@destroy')->where('id', '[0-9]+');;
-
-Route::post('/post/{id}/comment/store', 'CommentController@store')->where('id', '[0-9]+');;
+Route::group(['prefix'=>'/home', 'middleware'=>'auth'], function() {
+    Route::get('/', 'Home\HomeController@index');
+});

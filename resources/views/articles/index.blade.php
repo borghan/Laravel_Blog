@@ -1,7 +1,7 @@
 @extends('app')
 @section('content')
     @foreach($articles as $article)
-        <article class="format-image group">
+        <article class="format-standard group">
             <h2 class="post-title pad">
                 <a href="/post/{{ $article->id }}"> {{ $article->title }}</a>
             </h2>
@@ -35,4 +35,7 @@
             </div>
         </article>
     @endforeach
+    <nav class="text-center">
+        {!! $articles->render() !!}
+    </nav>
 @endsection
