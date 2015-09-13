@@ -79,7 +79,7 @@ class AuthController extends Controller
             'password'=>$request['password']
         ];
         if (Auth::attempt($input)) {
-            return redirect('/post');
+            return Redirect::route('home');
         } else {
             return Redirect::route('showLogin');
         }

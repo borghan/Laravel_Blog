@@ -32,5 +32,5 @@ Route::group(['prefix'=>'/auth'], function() {
 });
 
 Route::group(['prefix'=>'/home', 'middleware'=>'auth'], function() {
-    Route::get('/', 'Home\HomeController@index');
+    Route::get('/', ['as'=>'home', 'uses'=>'Home\HomeController@index']);
 });
