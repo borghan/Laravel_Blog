@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'ArticleController@index');
+Route::get('/', ['as'=>'index', 'uses'=>'ArticleController@index']);
 
 Route::get('/post/{id}', 'ArticleController@show');
 

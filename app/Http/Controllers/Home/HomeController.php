@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Home;
 
+use App\Article;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class HomeController extends Controller
 {
@@ -15,7 +17,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home.index');
+        $articles = Article::with('getTags')->latest()->paginate(10);
+        return view('home.index', compact('articles'));
     }
 
     /**

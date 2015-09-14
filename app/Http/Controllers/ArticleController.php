@@ -50,7 +50,7 @@ class ArticleController extends Controller
         $tags = $this -> separateTags($request['tags']);
         $this -> saveTags($article, $tags);
 
-        return redirect('/post');
+        return Redirect::route('home');
     }
 
     /**
@@ -120,7 +120,7 @@ class ArticleController extends Controller
         }
         $this->saveTags($article, $tags);
 
-        return redirect('/post');
+        return Redirect::route('home');
     }
 
     /**
