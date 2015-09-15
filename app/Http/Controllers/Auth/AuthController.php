@@ -87,6 +87,12 @@ class AuthController extends Controller
 
     protected function logout()
     {
+        $this->auth->logout();
+        return Redirect::route('index');
+    }
 
+    public function showReset()
+    {
+        return view('auth.reset');
     }
 }

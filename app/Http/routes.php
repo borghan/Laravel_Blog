@@ -18,17 +18,19 @@ Route::get('/post/{id}', 'ArticleController@show');
 Route::post('/post/{id}/comment/store', ['as'=>'createComment', 'uses'=>'CommentController@store']);
 
 Route::group(['prefix'=>'/post', 'middleware'=>'auth'], function() {
-    Route::get('create', ['as'=>'createArticle', 'uses'=>'ArticleController@create']);
-    Route::post('store', ['as'=>'storeArticle', 'uses'=>'ArticleController@store']);
-    Route::get('{id}/edit', ['as'=>'editArticle', 'uses'=>'ArticleController@edit']);
-    Route::put('{id}', ['as'=>'updateArticle', 'uses'=>'ArticleController@update']);
-    Route::delete('{id}', ['as'=>'deleteArticle', 'uses'=>'ArticleController@destroy']);
+    Route::get('create', ['as'=>'createArticle', 'uses'=>'Home\ArticleController@create']);
+    Route::post('store', ['as'=>'storeArticle', 'uses'=>'Home\ArticleController@store']);
+    Route::get('{id}/edit', ['as'=>'editArticle', 'uses'=>'Home\ArticleController@edit']);
+    Route::put('{id}', ['as'=>'updateArticle', 'uses'=>'Home\ArticleController@update']);
+    Route::delete('{id}', ['as'=>'deleteArticle', 'uses'=>'Home\ArticleController@destroy']);
 });
 
 Route::group(['prefix'=>'/auth'], function() {
     Route::get('login', ['as'=>'showLogin', 'uses'=>'Auth\AuthController@showLogin']);
     Route::post('login', ['as'=>'login', 'uses'=>'Auth\AuthController@login']);
     Route::get('logout', ['as'=>'logout', 'uses'=>'Auth\AuthController@logout']);
+    Route::get('reset', ['as'=>'showReset', 'uses'=>'Auth\AuthController@showReset']);
+    Route::post('rest', ['as'=>'reset', 'uses'=>'Auth\AuthController@reset']);
 });
 
 Route::group(['prefix'=>'/home', 'middleware'=>'auth'], function() {

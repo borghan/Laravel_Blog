@@ -36,7 +36,7 @@
                         <li><a href="#">更改密码</a></li>
                         <li><a href="#">站点设置</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">退出</a></li>
+                        <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>
                 </li>
             </ul>
