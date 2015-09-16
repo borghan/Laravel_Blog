@@ -5,10 +5,10 @@
     @if($errors->any())
         @include('utils.alert', ['errors'])
     @endif
-    {!! Form::open(['url' => route('reset'), 'method' => 'post']) !!}
+    {!! Form::open(['url' => route('postReset'), 'method' => 'post']) !!}
     <div class="form-group">
         {!! Form::label('email', '邮箱:') !!}
-        {!! Form::email('email', old('email'), ['class'=>'form-control', 'required' => 'required']) !!}
+        {!! Form::email('email', Auth::user()->email, ['class'=>'form-control', 'required' => 'required']) !!}
     </div>
     <div class="form-group">
         {!! Form::label('old_password', '旧密码:') !!}

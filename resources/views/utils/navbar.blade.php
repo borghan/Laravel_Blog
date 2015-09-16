@@ -33,7 +33,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         设置 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">更改密码</a></li>
+                        <li><a href="{{ route('getReset') }}">更改密码</a></li>
                         <li><a href="#">站点设置</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('logout') }}">退出</a></li>

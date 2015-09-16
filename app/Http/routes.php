@@ -26,11 +26,11 @@ Route::group(['prefix'=>'/post', 'middleware'=>'auth'], function() {
 });
 
 Route::group(['prefix'=>'/auth'], function() {
-    Route::get('login', ['as'=>'showLogin', 'uses'=>'Auth\AuthController@showLogin']);
-    Route::post('login', ['as'=>'login', 'uses'=>'Auth\AuthController@login']);
-    Route::get('logout', ['as'=>'logout', 'uses'=>'Auth\AuthController@logout']);
-    Route::get('reset', ['as'=>'showReset', 'uses'=>'Auth\AuthController@showReset']);
-    Route::post('rest', ['as'=>'reset', 'uses'=>'Auth\AuthController@reset']);
+    Route::get('logout', ['as'=>'logout', 'uses'=>'Auth\AuthController@getLogout']);
+    Route::get('login', ['as'=>'getLogin', 'uses'=>'Auth\AuthController@getLogin']);
+    Route::post('login', ['as'=>'postLogin', 'uses'=>'Auth\AuthController@postLogin']);
+    Route::get('reset', ['as'=>'getReset', 'uses'=>'Auth\PasswordController@getReset']);
+    Route::post('reset', ['as'=>'postReset', 'uses'=>'Auth\PasswordController@postReset']);
 });
 
 Route::group(['prefix'=>'/home', 'middleware'=>'auth'], function() {

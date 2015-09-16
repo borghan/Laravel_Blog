@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Request;
 use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -67,12 +66,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function showLogin()
+    public function getLogin()
     {
         return view('auth.login');
     }
 
-    protected function login(Requests\LoginRequest $request)
+    protected function postLogin(Requests\LoginRequest $request)
     {
         $input = [
             'name'=>$request['name'],
@@ -81,18 +80,8 @@ class AuthController extends Controller
         if (Auth::attempt($input)) {
             return Redirect::route('home');
         } else {
-            return Redirect::route('showLogin');
+            return Redirect::route('getLogin');
         }
     }
 
-    protected function logout()
-    {
-        $this->auth->logout();
-        return Redirect::route('index');
-    }
-
-    public function showReset()
-    {
-        return view('auth.reset');
-    }
 }

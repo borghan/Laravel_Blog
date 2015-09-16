@@ -5,7 +5,7 @@
     @if($errors->any())
         @include('utils.alert', ['errors'])
     @endif
-    {!! Form::open(['url' => route('login'), 'method' => 'post']) !!}
+    {!! Form::open(['url' => route('postLogin'), 'method' => 'post']) !!}
     <div class="form-group">
         {!! Form::label('name', '用户名:') !!}
         {!! Form::text('name', old('name'), ['class'=>'form-control', 'required' => 'required']) !!}
