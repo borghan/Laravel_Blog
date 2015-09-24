@@ -124,7 +124,7 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         Article::where('id', $id)->delete();
-        return redirect('/post');
+        return Redirect::route('home');
     }
 
     public function separateTags($tags)

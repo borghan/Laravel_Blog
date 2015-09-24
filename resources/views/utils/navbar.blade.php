@@ -14,7 +14,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">管理文章 <span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="{{ route('home') }}">管理文章 <span class="sr-only">(current)</span></a></li>
                 <li><a href="{{ route('createArticle') }}">新建文章</a></li>
             </ul>
 
@@ -34,7 +34,7 @@
                         设置 <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="{{ route('getReset') }}">更改密码</a></li>
-                        <li><a href="#">站点设置</a></li>
+                        <li><a href="{{ route('config') }}">站点设置</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="{{ route('logout') }}">退出</a></li>
                     </ul>

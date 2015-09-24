@@ -35,4 +35,6 @@ Route::group(['prefix'=>'/auth'], function() {
 
 Route::group(['prefix'=>'/home', 'middleware'=>'auth'], function() {
     Route::get('/', ['as'=>'home', 'uses'=>'Home\HomeController@index']);
+    Route::get('config', ['as'=>'config', 'uses'=>'Home\ConfigController@index']);
+    Route::post('config', ['as'=>'storeConfig', 'uses'=>'Home\ConfigController@store']);
 });

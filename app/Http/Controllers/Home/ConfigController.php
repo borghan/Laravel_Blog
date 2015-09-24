@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Home;
 
-use App\Article;
-use App\Config;
 use Illuminate\Http\Request;
 
+use App\Config;
 use App\Http\Requests;
-use Illuminate\Pagination\Paginator;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Redirect;
 
-class ArticleController extends Controller
+class ConfigController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +19,7 @@ class ArticleController extends Controller
     public function index()
     {
         $config = Config::getConfig();
-        $articles = Article::with('getTags', 'getComments')->latest()->published()->paginate(5);
-        return view('articles.index', compact('articles', 'config'));
+        return view('home.config', compact('config'));
     }
 
     /**
@@ -33,38 +32,34 @@ class ArticleController extends Controller
         //
     }
 
-
     /**
      * Store a newly created resource in storage.
      *
-     * @param  Request $request
+     * @param  Request  $request
      * @return Response
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        Config::create($input);
+        return Redirect::back();
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function show($id)
     {
-        $article = Article::findOrFail($id);
-        $next_article = $article->getNextArticleId($id);
-        $prev_article = $article->getPrevArticleId($id);
-        $comments = $article->getComments;
-        $tags = $article->getTags;
-        return view('articles.show', compact('article', 'next_article', 'prev_article', 'comments', 'tags'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function edit($id)
@@ -75,8 +70,8 @@ class ArticleController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request $request
-     * @param  int $id
+     * @param  Request  $request
+     * @param  int  $id
      * @return Response
      */
     public function update(Request $request, $id)
@@ -87,12 +82,11 @@ class ArticleController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  int  $id
      * @return Response
      */
     public function destroy($id)
     {
         //
     }
-
 }
