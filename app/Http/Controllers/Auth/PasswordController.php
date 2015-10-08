@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Config;
 use Auth;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Support\Facades\Redirect;
@@ -36,8 +37,9 @@ class PasswordController extends Controller
 
     public function getReset()
     {
+        $config = Config::getConfig();
         if(Auth::check()) {
-            return view('auth.reset');
+            return view('auth.reset', compact('config'));
         }
         return Redirect::route('getLogin');
     }

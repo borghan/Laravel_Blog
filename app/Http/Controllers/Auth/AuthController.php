@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Config;
 use Auth;
 use Illuminate\Support\Facades\Redirect;
 use Validator;
@@ -68,7 +69,8 @@ class AuthController extends Controller
 
     public function getLogin()
     {
-        return view('auth.login');
+        $config = Config::getConfig();
+        return view('auth.login', compact('config'));
     }
 
     protected function postLogin(Requests\LoginRequest $request)

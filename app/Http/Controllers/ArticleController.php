@@ -53,12 +53,13 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
+        $config = Config::getConfig();
         $article = Article::findOrFail($id);
         $next_article = $article->getNextArticleId($id);
         $prev_article = $article->getPrevArticleId($id);
         $comments = $article->getComments;
         $tags = $article->getTags;
-        return view('articles.show', compact('article', 'next_article', 'prev_article', 'comments', 'tags'));
+        return view('articles.show', compact('article', 'next_article', 'prev_article', 'comments', 'tags', 'config'));
     }
 
     /**
